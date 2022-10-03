@@ -8,8 +8,8 @@ app.use(bodyParser.json());
 const appRoute = require('./src/routes/route-sparepart');
 app.use('/',appRoute);
 
-app.listen(8080, () => {
-    console.log('Listening on port 8080');
+app.listen(5000, () => {
+    console.log('Listening on port 5000');
 });
 
 
