@@ -1,17 +1,29 @@
 const config = require('../configs/database');
 const mysql = require('mysql');
 const pool = mysql.createPool(config);
+var multer  = require('multer');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads');
+      },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
 
+const uploadImg = multer({storage: storage}).single('sparepart_image');
 pool.on('error',(err)=>{
     console.error(err);
 });
 
+
 module.exports = {
     //getAllSpareparts
+    uploadImg,
     getDataSparepart(req,res){
-        pool.getConnection(function(err,connection){
+         pool.getConnection(function(err,connection){
             if(err)throw err;
-            connection.query(
+             connection.query(
                 `
                 SELECT * FROM spareparts;
                 `
@@ -53,7 +65,8 @@ module.exports = {
             sparepart_code : req.body.sparepart_code,
             sparepart_place : req.body.sparepart_place,
             sparepart_merk : req.body.sparepart_merk,
-            sparepart_type : req.body.sparepart_type
+            sparepart_type : req.body.sparepart_type,
+            sparepart_image : req.file.path
         }
         pool.getConnection(function(err, connection) {
             if (err) throw err;
@@ -80,7 +93,7 @@ module.exports = {
             sparepart_merk : req.body.sparepart_merk,
             sparepart_type : req.body.sparepart_type
         }
-        let id = req.body.id
+        let id = req.body.sparepart_id
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
@@ -100,7 +113,7 @@ module.exports = {
     },
     // Delete data karyawan
     deleteDataSparepart(req,res){
-        let id = req.body.id
+        let id = req.body.sparepart_id
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
