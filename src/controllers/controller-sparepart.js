@@ -27,13 +27,24 @@ module.exports = {
                 `
                 SELECT * FROM spareparts;
                 `
-                , function(err,results){
+                ,
+                async function(err,results){
                 if(err)throw err;
-                res.send({
-                    success : true,
-                    message : 'Data Successfully Retrieved',
-                    data    : results
-                });
+                if(results.length > 0){
+                    await res.send({
+                        status : 'success',
+                        success: true,
+                        message: 'Data Successfully Retrieved',
+                        data: results
+                    });
+                }else {
+                    await res.send({
+                        status : 'fail',
+                        success: true,
+                        message: 'No Data Retrieved',
+                        data: results
+                    });
+                }
             });
             connection.release();
         })
@@ -48,13 +59,24 @@ module.exports = {
                 SELECT * FROM spareparts WHERE sparepart_id = ?;
                 `
             , [id],
-            function (error, results) {
+            async function (error, results) {
                 if(error) throw error;
-                res.send({
-                    success: true,
-                    message: 'Data Successfully Retrieved',
-                    data: results
-                });
+                if(results.length > 0){
+                    await res.send({
+                        status : 'success',
+                        success: true,
+                        message: 'Data Successfully Retrieved',
+                        data: results
+                    });
+                }else {
+                    await res.send({
+                        status : 'fail',
+                        success: true,
+                        message: 'No Data Retrieved',
+                        data: results
+                    });
+                }
+
             });
             connection.release();
         })
@@ -78,6 +100,7 @@ module.exports = {
             function (error, results) {
                 if(error) throw error;
                 res.send({
+                    status: 'success',
                     success: true,
                     message: 'Data Successfully Added',
                 });
@@ -104,6 +127,7 @@ module.exports = {
             function (error, results) {
                 if(error) throw error;
                 res.send({
+                    'status': 'success',
                     success: true,
                     message: 'Data Successfully Saved',
                 });
@@ -124,6 +148,7 @@ module.exports = {
             function (error, results) {
                 if(error) throw error;
                 res.send({
+                    status : 'success',
                     success: true,
                     message: 'Data Successfully Deleted'
                 });
