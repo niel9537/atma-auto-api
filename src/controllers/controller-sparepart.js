@@ -88,7 +88,9 @@ module.exports = {
             sparepart_place : req.body.sparepart_place,
             sparepart_merk : req.body.sparepart_merk,
             sparepart_type : req.body.sparepart_type,
-            sparepart_image : req.file.path
+            sparepart_stock : req.body.sparepart_stock,
+            sparepart_price : req.body.sparepart_price
+            //sparepart_image : req.file.path
         }
         pool.getConnection(function(err, connection) {
             if (err) throw err;
@@ -114,7 +116,9 @@ module.exports = {
             sparepart_code : req.body.sparepart_code,
             sparepart_place : req.body.sparepart_place,
             sparepart_merk : req.body.sparepart_merk,
-            sparepart_type : req.body.sparepart_type
+            sparepart_type : req.body.sparepart_type,
+            sparepart_stock : req.body.sparepart_stock,
+            sparepart_price : req.body.sparepart_price,
         }
         let id = req.body.sparepart_id
         pool.getConnection(function(err, connection) {
