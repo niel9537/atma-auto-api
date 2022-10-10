@@ -92,6 +92,8 @@ module.exports = {
             sparepart_price : req.body.sparepart_price
             //sparepart_image : req.file.path
         }
+        console.log(req.header('Content-Type'));
+
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
@@ -142,6 +144,7 @@ module.exports = {
     // Delete data karyawan
     deleteDataSparepart(req,res){
         let id = req.body.sparepart_id
+        console.log(id);
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
@@ -156,6 +159,7 @@ module.exports = {
                     success: true,
                     message: 'Data Successfully Deleted'
                 });
+
             });
             connection.release();
         })

@@ -22,18 +22,22 @@ module.exports = {
             async function (error, results) {
                 if(error) throw error;
                 if(results.length > 0){
-                    jwt.sign(userdata,'secret', {expiresIn:'30s'},(err,token) =>{
+                    jwt.sign(userdata,'secret', {expiresIn:'1800s'},(err,token) =>{
                         if(err){
                             console.log(err);
                             res.sendStatus(304);
                             return
                         }
                         const Token = token;
+                        console.log('Token ',Token);
                         res.send({
                             status : 'success',
                             success: true,
                             message: 'Data Successfully Retrieved',
-                            token:Token,
+                            token:[{
+                                token : Token,
+                                expiredAt : '30 minute'
+                            }],
                             data: results
 
                         });
