@@ -52,6 +52,7 @@ module.exports = {
     //getSparepartByID
     getDataSparepartByID(req,res){
         let id = req.params.id;
+        console.log('Sparepart ID',id);
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
@@ -92,7 +93,7 @@ module.exports = {
             sparepart_price : req.body.sparepart_price
             //sparepart_image : req.file.path
         }
-        console.log(req.header('Content-Type'));
+        console.log('Sparepart Data',data);
 
         pool.getConnection(function(err, connection) {
             if (err) throw err;
@@ -123,6 +124,7 @@ module.exports = {
             sparepart_price : req.body.sparepart_price,
         }
         let id = req.body.sparepart_id
+        console.log('Sparepart Data',dataEdit);
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
@@ -143,8 +145,8 @@ module.exports = {
     },
     // Delete data karyawan
     deleteDataSparepart(req,res){
-        let id = req.body.sparepart_id
-        console.log(id);
+        let id = req.params.id
+        console.log('Sparepart ID',id);
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
