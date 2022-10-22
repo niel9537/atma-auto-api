@@ -47,6 +47,10 @@ module.exports = {
                         status : 'fail',
                         success: true,
                         message: 'No Data Retrieved',
+                        token:[{
+                            token : '',
+                            expiredAt : ''
+                        }],
                         data: results
                     });
                 }
