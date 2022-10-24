@@ -1,17 +1,7 @@
 const config = require('../configs/database');
 const mysql = require('mysql');
 const pool = mysql.createPool(config);
-var multer  = require('multer');
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './uploads');
-      },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    }
-});
 
-const uploadImg = multer({storage: storage}).single('sparepart_image');
 pool.on('error',(err)=>{
     console.error(err);
 });
@@ -19,13 +9,13 @@ pool.on('error',(err)=>{
 
 module.exports = {
     //getAllSpareparts
-    uploadImg,
-    getDataSparepart(req,res){
+    // uploadImg,
+    getDataEmployee(req,res){
          pool.getConnection(function(err,connection){
             if(err)throw err;
              connection.query(
                 `
-                SELECT * FROM spareparts;
+                SELECT * FROM users WHERE user_role NOT IN ('4') ;
                 `
                 ,
                 async function(err,results){
@@ -49,15 +39,15 @@ module.exports = {
             connection.release();
         })
     },
-    //getSparepartByID
-    getDataSparepartByID(req,res){
+    // //getServiceByID
+    getDataEmployeeByID(req,res){
         let id = req.params.id;
-        console.log('Sparepart ID',id);
+        console.log('Employee ID',id);
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                SELECT * FROM spareparts WHERE sparepart_id = ?;
+                SELECT * FROM users WHERE user_id = ? AND user_role NOT IN ('4');
                 `
             , [id],
             async function (error, results) {
@@ -82,24 +72,32 @@ module.exports = {
             connection.release();
         })
     },
-    //addSparepart
-    addDataSparepart(req,res){
+    // //addService
+    addDataEmployee(req,res){
+        // console.log('Service Content Type',req.get('Content-Type'));
+        // console.log('Service',req.body);
+        let date_ob = new Date();
+        let date = ("0" + date_ob.getDate()).slice(-2);
+        let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+        let year = date_ob.getFullYear();
         let data = {
-            sparepart_code : req.body.sparepart_code,
-            sparepart_place : req.body.sparepart_place,
-            sparepart_merk : req.body.sparepart_merk,
-            sparepart_type : req.body.sparepart_type,
-            sparepart_stock : req.body.sparepart_stock,
-            sparepart_price : req.body.sparepart_price,
-            sparepart_image : req.body.sparepart_image
+            user_name : req.body.user_name,
+            user_email : req.body.user_email,
+            user_password : req.body.user_password,
+            user_fullname : req.body.user_fullname,
+            user_address : req.body.user_address,
+            user_phonenumber : req.body.user_phonenumber,
+            user_role : req.body.user_role,
+            user_createdat : year + "-" + month + "-" + date,
+            user_status : 1,
         }
-        console.log('Sparepart Data',data);
+        console.log('Employee Data',data);
 
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                INSERT INTO spareparts SET ?;
+                INSERT INTO users SET ?;
                 `
             , [data],
             function (error, results) {
@@ -113,24 +111,30 @@ module.exports = {
             connection.release();
         })
     },
-    // updateSparepart
-    editDataSparepart(req,res){
+
+    editDataEmployee(req,res){
+        let date_ob = new Date();
+        let date = ("0" + date_ob.getDate()).slice(-2);
+        let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+        let year = date_ob.getFullYear();
         let dataEdit = {
-            sparepart_code : req.body.sparepart_code,
-            sparepart_place : req.body.sparepart_place,
-            sparepart_merk : req.body.sparepart_merk,
-            sparepart_type : req.body.sparepart_type,
-            sparepart_stock : req.body.sparepart_stock,
-            sparepart_price : req.body.sparepart_price,
-            sparepart_image : req.body.sparepart_image
+            user_name : req.body.user_name,
+            user_email : req.body.user_email,
+            user_password : req.body.user_password,
+            user_fullname : req.body.user_fullname,
+            user_address : req.body.user_address,
+            user_phonenumber : req.body.user_phonenumber,
+            user_role : req.body.user_role,
+            user_createdat : year + "-" + month + "-" + date,
+            user_status : 1,
         }
-        let id = req.body.sparepart_id
-        console.log('Sparepart Data',dataEdit);
+        let id = req.body.user_id
+        console.log('Employee ID',dataEdit);
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                UPDATE spareparts SET ? WHERE sparepart_id = ?;
+                UPDATE users SET ? WHERE user_id = ?;
                 `
             , [dataEdit, id],
             function (error, results) {
@@ -144,15 +148,15 @@ module.exports = {
             connection.release();
         })
     },
-    // Delete data karyawan
-    deleteDataSparepart(req,res){
+    // // Delete data Jasa
+    deleteDataEmployee(req,res){
         let id = req.params.id
-        console.log('Sparepart ID',id);
+         console.log('Employee ID',id);
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                DELETE FROM spareparts WHERE sparepart_id = ?;
+                DELETE FROM users WHERE user_id = ?;
                 `
             , [id],
             function (error, results) {

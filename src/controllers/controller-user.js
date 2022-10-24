@@ -36,7 +36,7 @@ module.exports = {
                             message: 'Data Successfully Retrieved',
                             token:[{
                                 token : Token,
-                                expiredAt : '30 minute'
+                                expiredAt : '500 minute'
                             }],
                             data: results
 
@@ -58,5 +58,43 @@ module.exports = {
             });
             connection.release();
         })
-    }
+    },
+    register(req,res){
+        let date_ob = new Date();
+        let date = ("0" + date_ob.getDate()).slice(-2);
+        let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+        let year = date_ob.getFullYear();
+        let data = {
+            user_name : req.body.user_name,
+            user_email : req.body.user_email,
+            user_password : req.body.user_password,
+            user_fullname : req.body.user_fullname,
+            user_address : req.body.user_address,
+            user_phonenumber : req.body.user_phonenumber,
+            user_role : req.body.user_role,
+            user_createdat : year + "-" + month + "-" + date,
+            user_status : 1,
+        }
+        console.log('Service Data',data);
+
+        pool.getConnection(function(err, connection) {
+            if (err) throw err;
+            connection.query(
+                `
+                INSERT INTO users SET ?;
+                `
+            , [data],
+            function (error, results) {
+                if(error) throw error;
+                res.send({
+                    status: 'success',
+                    success: true,
+                    message: 'Data Successfully Added',
+                });
+            });
+            connection.release();
+        })
+    },
+
+
 }

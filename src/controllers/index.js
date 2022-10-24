@@ -1,10 +1,9 @@
 const { JsonWebTokenError } = require('jsonwebtoken');
-<<<<<<< HEAD
-=======
 const service = require('./controller-service');
->>>>>>> 73c0fcc (upd:for nielchan)
 const sparepart = require('./controller-sparepart');
 const user = require('./controller-user');
+const employee = require('./controller-employee');
+const customer = require('./controller-customer');
 const jwt = require('jsonwebtoken');
 function verifyUser(req, res, next) {
   const bearer = req.headers.bearer;
@@ -14,7 +13,7 @@ function verifyUser(req, res, next) {
       res.json(err);
       return
     }
-    req.body = data;
+    // req.body = data;
     next()
   });
 
@@ -22,9 +21,8 @@ function verifyUser(req, res, next) {
 module.exports = {
   sparepart,
   user,
-<<<<<<< HEAD
-=======
   service,
->>>>>>> 73c0fcc (upd:for nielchan)
   verifyUser,
+  employee,
+  customer
 };

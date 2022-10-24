@@ -2,6 +2,10 @@ const config = require('../configs/database');
 const mysql = require('mysql');
 const pool = mysql.createPool(config);
 
+pool.on('error',(err)=>{
+    console.error(err);
+});
+
 
 module.exports = {
     //getAllSpareparts
@@ -70,6 +74,8 @@ module.exports = {
     },
     // //addService
     addDataService(req,res){
+        // console.log('Service Content Type',req.get('Content-Type'));
+        // console.log('Service',req.body);
         let data = {
             user_id : req.body.user_id,
             service_name : req.body.service_name,
@@ -77,7 +83,7 @@ module.exports = {
             service_cost : req.body.service_cost,
             service_category : req.body.service_category,
         }
-        // console.log('Sparepart Data',data);
+        console.log('Service Data',data);
 
         pool.getConnection(function(err, connection) {
             if (err) throw err;
@@ -107,7 +113,7 @@ module.exports = {
             service_category : req.body.service_category,
         }
         let id = req.body.service_id
-        // console.log('Sparepart Data',dataEdit);
+        console.log('Service ID',dataEdit);
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
