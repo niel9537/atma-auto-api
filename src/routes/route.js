@@ -29,4 +29,6 @@ router.post('/sparepart/edit', verifyUser,sparepart.uploadImg, sparepart.editDat
 router.get('/sparepart/delete/:id', verifyUser, sparepart.deleteDataSparepart);
 router.post('/auth/login', user.login);
 router.post('/auth/register', user.register);
+router.post('/auth/sendmail', user.sendmail);
+router.post('/auth/forgetpassword', user.forgetpassword);
 module.exports = router;

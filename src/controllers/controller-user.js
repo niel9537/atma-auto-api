@@ -2,8 +2,52 @@ const config = require('../configs/database');
 const mysql = require('mysql');
 const pool = mysql.createPool(config);
 const jwt = require('jsonwebtoken');
-module.exports = {
+const nodemailer = require('nodemailer');
+const smtpTransport = require('nodemailer-smtp-transport');
 
+const transporter = nodemailer.createTransport(smtpTransport({
+    service:'gmail',
+    port: 465,
+    host: "smtp.gmail.com",
+    auth: {
+        user: 'convergence.arr@gmail.com',
+        pass: 'gvxsrgnehfawmgro',
+    },
+    secure: true,
+}));
+
+module.exports = {
+    //forget password
+    forgetpassword(req,res){
+        let user_name = req.body.user_name;
+        pool.getConnection(function(err,connection){
+            if(err)throw err;
+             connection.query(
+                `
+                SELECT * FROM users WHERE user_name = ? ;
+                `
+                ,[user_name],
+                async function(err,results){
+                if(err)throw err;
+                if(results.length > 0){
+                    await res.send({
+                        status : 'success',
+                        success: true,
+                        message: 'Data Successfully Retrieved',
+                        data: results
+                    });
+                }else {
+                    await res.send({
+                        status : 'fail',
+                        success: true,
+                        message: 'No Data Retrieved',
+                        data: results
+                    });
+                }
+            });
+            connection.release();
+        })
+    },
     //login
     login(req,res){
         let email = req.body.user_email;
@@ -96,5 +140,21 @@ module.exports = {
         })
     },
 
+    sendmail(req,res){
+        const {to, subject, text } = req.body;
+        const mailData = {
+            from: 'atmaauto.official@gmail.com',
+            to: to,
+            subject: subject,
+            text: text,
+            html: '<b><img src="https://hawkemedia.com/wp-content/uploads/Email-Gif.gif" height = 100 width =100  /> Hey there! </b><br> This is our first message sent with Nodemailer<br/>',
+        };
 
+        transporter.sendMail(mailData, (error, info) => {
+            if (error) {
+                return console.log(error);
+            }
+            res.status(200).send({ message: "Mail send", message_id: info.messageId });
+        });
+    }
 }

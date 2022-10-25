@@ -35,7 +35,7 @@ module.exports = {
                         status : 'success',
                         success: true,
                         message: 'Data Successfully Retrieved',
-                        data: results
+                        data: results.length
                     });
                 }else {
                     await res.send({

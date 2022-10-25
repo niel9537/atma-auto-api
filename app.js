@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const app = express();
-
+const port = process.env.PORT || 5000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -15,7 +15,7 @@ const appRoute = require('./src/routes/route');
 
 app.use('/',appRoute);
 
-app.listen(5000, (req) => {
+app.listen(port, (req) => {
     console.log('Listening on port 5000');
 });
 
