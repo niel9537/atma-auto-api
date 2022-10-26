@@ -5,6 +5,7 @@ const user = require('./controller-user');
 const employee = require('./controller-employee');
 const customer = require('./controller-customer');
 const jwt = require('jsonwebtoken');
+//update
 function verifyUser(req, res, next) {
   const bearer = req.headers.bearer;
   jwt.verify(bearer, 'secret', (err,data)=>{
