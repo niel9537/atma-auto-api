@@ -4,6 +4,7 @@ const sparepart = require('./controller-sparepart');
 const user = require('./controller-user');
 const employee = require('./controller-employee');
 const customer = require('./controller-customer');
+const supplier = require('./controller-supplier');
 const jwt = require('jsonwebtoken');
 //update
 function verifyUser(req, res, next) {
@@ -11,7 +12,7 @@ function verifyUser(req, res, next) {
   jwt.verify(bearer, 'secret', (err,data)=>{
     if (err) {
       console.log(err.message);
-      res.json(err);
+      res.status(400).json(err);
       return
     }
     // req.body = data;
@@ -26,5 +27,6 @@ module.exports = {
   service,
   verifyUser,
   employee,
-  customer
+  customer,
+  supplier
 };

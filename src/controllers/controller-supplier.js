@@ -10,12 +10,12 @@ pool.on('error',(err)=>{
 module.exports = {
     //getAllSpareparts
     // uploadImg,
-    getDataCustomer(req,res){
+    getDataSupplier(req,res){
          pool.getConnection(function(err,connection){
             if(err)throw err;
              connection.query(
                 `
-                SELECT * FROM users WHERE user_role IN ('4') ;
+                SELECT * FROM suppliers;
                 `
                 ,
                 async function(err,results){
@@ -28,7 +28,7 @@ module.exports = {
                         data: results
                     });
                 }else {
-                    await res.status(400).send({
+                    await res.send({
                         status : 'fail',
                         success: true,
                         message: 'No Data Retrieved',
@@ -40,14 +40,14 @@ module.exports = {
         })
     },
     // //getServiceByID
-    getDataCustomerByID(req,res){
+    getDataSupplierByID(req,res){
         let id = req.params.id;
-        console.log('Customer ID',id);
+        console.log('Supplier ID',id);
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                SELECT * FROM users WHERE user_id = ? AND user_role IN ('4');
+                SELECT * FROM suppliers WHERE supplier_id = ?;
                 `
             , [id],
             async function (error, results) {
@@ -73,31 +73,21 @@ module.exports = {
         })
     },
     // //addService
-    addDataCustomer(req,res){
+    addDataSupplier(req,res){
         // console.log('Service Content Type',req.get('Content-Type'));
         // console.log('Service',req.body);
-        let date_ob = new Date();
-        let date = ("0" + date_ob.getDate()).slice(-2);
-        let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-        let year = date_ob.getFullYear();
         let data = {
-            user_name : req.body.user_name,
-            user_email : req.body.user_email,
-            user_password : req.body.user_password,
-            user_fullname : req.body.user_fullname,
-            user_address : req.body.user_address,
-            user_phonenumber : req.body.user_phonenumber,
-            user_role : 4,
-            user_createdat : year + "-" + month + "-" + date,
-            user_status : 1,
+            supplier_name : req.body.supplier_name,
+            supplier_phonenumber : req.body.supplier_phonenumber,
+            supplier_address : req.body.supplier_address,
         }
-        console.log('Customer Data',data);
+        console.log('Supplier Data',data);
 
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                INSERT INTO users SET ?;
+                INSERT INTO suppliers SET ?;
                 `
             , [data],
             function (error, results) {
@@ -111,30 +101,20 @@ module.exports = {
             connection.release();
         })
     },
-
-    editDataCustomer(req,res){
-        let date_ob = new Date();
-        let date = ("0" + date_ob.getDate()).slice(-2);
-        let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-        let year = date_ob.getFullYear();
+    // // updateService
+    editDataSupplier(req,res){
         let dataEdit = {
-            user_name : req.body.user_name,
-            user_email : req.body.user_email,
-            user_password : req.body.user_password,
-            user_fullname : req.body.user_fullname,
-            user_address : req.body.user_address,
-            user_phonenumber : req.body.user_phonenumber,
-            user_role : 4,
-            user_createdat : year + "-" + month + "-" + date,
-            user_status : 1,
+            supplier_name : req.body.supplier_name,
+            supplier_phonenumber : req.body.supplier_phonenumber,
+            supplier_address : req.body.supplier_address,
         }
-        let id = req.body.user_id
-        console.log('Customer ID',dataEdit);
+        let id = req.body.supplier_id
+        console.log('Supplier ID',dataEdit);
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                UPDATE users SET ? WHERE user_id = ?;
+                UPDATE suppliers SET ? WHERE supplier_id = ?;
                 `
             , [dataEdit, id],
             function (error, results) {
@@ -148,15 +128,15 @@ module.exports = {
             connection.release();
         })
     },
-    // // Delete data Jasa
-    deleteDataCustomer(req,res){
+    // Delete Supplier
+    deleteDataSupplier(req,res){
         let id = req.params.id
-         console.log('Customer ID',id);
+        console.log('Supplier ID',id);
         pool.getConnection(function(err, connection) {
             if (err) throw err;
             connection.query(
                 `
-                DELETE FROM users WHERE user_id = ?;
+                DELETE FROM suppliers WHERE supplier_id = ?;
                 `
             , [id],
             function (error, results) {

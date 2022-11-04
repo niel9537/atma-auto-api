@@ -1,6 +1,11 @@
 const router = require('express').Router();
-const {sparepart,user,service, verifyUser,employee,customer}   = require('../controllers');
+const {sparepart,user,service, verifyUser,employee,customer,supplier}   = require('../controllers');
 
+router.get('/supplier', verifyUser, supplier.getDataSupplier);
+router.get('/supplier/:id', verifyUser, supplier.getDataSupplierByID);
+router.post('/supplier/add', verifyUser, supplier.addDataSupplier);
+router.post('/supplier/edit', verifyUser, supplier.editDataSupplier);
+router.get('/supplier/delete/:id', verifyUser, supplier.deleteDataSupplier);
 
 
 router.post('/customer/edit', verifyUser, customer.editDataCustomer);
@@ -22,6 +27,7 @@ router.get('/service/:id', verifyUser, service.getDataServiceByID);
 router.post('/service/add', verifyUser, service.addDataService);
 router.post('/service/edit', verifyUser, service.editDataService);
 router.get('/service/delete/:id', verifyUser, service.deleteDataService);
+
 router.get('/sparepart', verifyUser, sparepart.getDataSparepart);
 router.get('/sparepart/:id', verifyUser, sparepart.getDataSparepartByID);
 router.post('/sparepart/add', verifyUser,sparepart.uploadImg, sparepart.addDataSparepart);

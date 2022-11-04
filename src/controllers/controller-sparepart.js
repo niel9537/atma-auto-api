@@ -23,6 +23,7 @@ module.exports = {
     getDataSparepart(req,res){
          pool.getConnection(function(err,connection){
             if(err)throw err;
+            console.log(req.body);
              connection.query(
                 `
                 SELECT * FROM spareparts;
@@ -35,7 +36,7 @@ module.exports = {
                         status : 'success',
                         success: true,
                         message: 'Data Successfully Retrieved',
-                        data: results.length
+                        data: results
                     });
                 }else {
                     await res.send({
