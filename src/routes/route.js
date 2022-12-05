@@ -1,5 +1,21 @@
 const router = require('express').Router();
-const {sparepart,user,service, verifyUser,employee,customer,supplier}   = require('../controllers');
+const {sparepart,user,service, verifyUser,employee,customer,supplier, inventory, transaksi}   = require('../controllers');
+
+router.post('/transaksi/add', verifyUser, transaksi.addDataTransaksi);
+router.post('/transaksi/getUserByEmail', verifyUser, transaksi.getDataUserByEmail);
+router.get('/transaksi', verifyUser, transaksi.getListTransaction);
+router.get('/transaksi/getInvoice', verifyUser, transaksi.getInvoice);
+router.post('/transaksi/confirm', verifyUser, transaksi.paymentConfirmation);
+router.get('/transaksi/invoice', verifyUser, transaksi.invoice);
+router.get('/transaksi/report', verifyUser, transaksi.report);
+router.get('/inventory/listsupplier', verifyUser, inventory.getListSupplier);
+router.get('/inventory', verifyUser, inventory.getDataInventory);
+router.get('/inventory/:id', verifyUser, inventory.getDataInventoryByID);
+router.post('/inventory/add', verifyUser, inventory.addDataInventory);
+router.post('/inventory/edit', verifyUser, inventory.editDataInventory);
+router.get('/inventory/delete/:id', verifyUser, inventory.deleteDataInventory);
+
+
 
 router.get('/supplier', verifyUser, supplier.getDataSupplier);
 router.get('/supplier/:id', verifyUser, supplier.getDataSupplierByID);

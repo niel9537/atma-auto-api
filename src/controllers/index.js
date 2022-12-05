@@ -5,6 +5,8 @@ const user = require('./controller-user');
 const employee = require('./controller-employee');
 const customer = require('./controller-customer');
 const supplier = require('./controller-supplier');
+const inventory = require('./controller-inventory');
+const transaksi = require('./controller-transaksi');
 const jwt = require('jsonwebtoken');
 //update
 function verifyUser(req, res, next) {
@@ -28,5 +30,7 @@ module.exports = {
   verifyUser,
   employee,
   customer,
-  supplier
+  supplier,
+  inventory,
+  transaksi
 };
